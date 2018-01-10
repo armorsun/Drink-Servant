@@ -53,14 +53,16 @@ int main(int argc, char *argv[])
 	cmd = "armHOME";
 	send_to_arduino(cmd.c_str());
 
-	sleep(2);
-	cmd = "armR180";
+	sleep(3);
+	cmd = "armY10";
 	send_to_arduino(cmd.c_str());
 	
-	sleep(10);
-	bool in_list = true; //0 water; 1 milk; 2 black tea; 3 milk tea
-//	int drink_id = 0;
+	sleep(3);
+	cmd = "armZ5";
+	send_to_arduino(cmd.c_str());
 
+	sleep(3);
+	bool in_list = true; //0 water; 1 milk; 2 black tea; 3 milk tea
 	in_list = make_beverage(atoi(argv[1]));
 	if(!in_list) cout << "wrong drink option!" << endl;
 

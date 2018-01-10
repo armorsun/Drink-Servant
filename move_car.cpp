@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
-#include <math.h>
+#include <cmath>
 #include "send_to_arduino.h"
 
 #define _USE_MATH_DEFINES
@@ -18,17 +18,22 @@ int main(int argc, char *argv[])
 	
 	cout << "angle: " << argv[1] << " vertical dis: " << argv[2] << endl;
 
-	const double dis_time_ratio = 5;
-	const double turn_ratio = 4.5;
+	const double dis_time_ratio = 2;
+	const double turn_ratio = 0.04;
 	double angle = atof(argv[1]) * turn_ratio;
-	double forward_t = atof(argv[2]) * acos(atof(argv[1]) * M_PI / 180.0) * dis_time_ratio;
+	double forward_t = atof(argv[2]) * dis_time_ratio;
 
 	cout << "turn: " << angle << " forward time: " << forward_t << endl;
 
 	//turn
-	string cmd = "move" + to_string(angle);
-	send_to_arduino(cmd.c_str());
-	sleep(3);
+	string cmd = "";
+	if(atof(argv[1]) > 8.5) cmd = "move50";
+	else if(atof(argv[1]) < -8.5) cmd ="move-50";
+	
+	send_to_arduino(cmd.c_str());	
+	sleep(abs (angle));
+
+//	send_to_arduino("stop");
 	
 	//forward
 	send_to_arduino("move0");

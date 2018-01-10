@@ -11,7 +11,7 @@ remote_control: remote_control_arm_record_video.o send_to_arduino.o
 	$(CC) -c $^ -o remote_control $(CFLAGS)
 
 move_car: move_car.cpp send_to_arduino.cpp
-	$(CC) -c $^ -o $@ -std=c++11
+	$(CC) $^ -o $@ -std=c++11
 
 main.o: main.cpp
 	$(CC) -c $< -o $@ -std=c++11
