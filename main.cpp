@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	send_to_arduino(cmd.c_str());
 
 	sleep(3);
-	cmd = "armY10";
+	cmd = "armY20";
 	send_to_arduino(cmd.c_str());
 	
 	sleep(3);

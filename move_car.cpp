@@ -18,26 +18,26 @@ int main(int argc, char *argv[])
 	
 	cout << "angle: " << argv[1] << " vertical dis: " << argv[2] << endl;
 
-	const double dis_time_ratio = 2;
-	const double turn_ratio = 0.04;
+	const double dis_time_ratio = 1.8;
+	const double turn_ratio = 0.07;
 	double angle = atof(argv[1]) * turn_ratio;
 	double forward_t = atof(argv[2]) * dis_time_ratio;
 
-	cout << "turn: " << angle << " forward time: " << forward_t << endl;
+	cout << "turn time: " << abs(angle) << " forward time: " << forward_t << endl;
 
 	//turn
 	string cmd = "";
-	if(atof(argv[1]) > 8.5) cmd = "move50";
-	else if(atof(argv[1]) < -8.5) cmd ="move-50";
+	if(atof(argv[1]) > 5) cmd = "move-50";
+	else if(atof(argv[1]) < -5) cmd ="move50";
 	
 	send_to_arduino(cmd.c_str());	
-	sleep(abs (angle));
+	usleep(abs(angle) * 1000000);
 
 //	send_to_arduino("stop");
 	
 	//forward
 	send_to_arduino("move0");
-	sleep(forward_t);
+	usleep(forward_t * 1000000);
 
 	send_to_arduino("stop");
 

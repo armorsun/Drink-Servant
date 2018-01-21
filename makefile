@@ -19,13 +19,13 @@ main.o: main.cpp
 remote_control_arm_record_video.o: remote_control_arm_record_video.cpp 
 	$(CC) -c $< -o $@ -std=c++11
 
-send_to_arduino.o: send_to_arduino.cpp send_to_arduino.h
+send_to_arduino.o: send_to_arduino.cpp
 	$(CC) -c $^ -o $@ -std=c++11
 
-make_beverage.o: make_beverage.cpp make_beverage.h
+make_beverage.o: make_beverage.cpp
 	$(CC) -c $^ -o $@ -std=c++11
 
-catch_cup.o: catch_cup.cpp catch_cup.h
+catch_cup.o: catch_cup.cpp
 	 $(CC) -c $^ -o $@ $(CFLAGS)
 
 clean: 

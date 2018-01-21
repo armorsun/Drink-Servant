@@ -6,7 +6,8 @@
 #include "catch_cup.h"
 #include "send_to_arduino.h"
 
-#define camera_Y_shift 50
+#define camera_Y_shift 70
+#define camera_X_shift 30
 
 using namespace std;
 using namespace cv;
@@ -22,7 +23,7 @@ bool catch_cup(VideoCapture &camera)
 		cout << "target: " << target.x << " " << target.y;
 		Point cup_coor(0, 0);
 		int range = 5;
-		int shift = 1;
+		int shift = 0.8;
 		double ratio = 0.008;
 		bool x_aimed = false, y_aimed = false;
 		Point tmp_cup(0, 0);
@@ -117,21 +118,21 @@ Point get_cup_center(Mat image)
 	Mat hsv, blue;
 	Point center(0, 0);
 	cvtColor(image, hsv, CV_BGR2HSV);
-	inRange(hsv, Scalar(100, 100, 0), Scalar(140, 255, 255), blue);
+	inRange(hsv, Scalar(100, 80, 0), Scalar(140, 255, 255), blue);
 
 	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(3, 3), Point(1, 1));
 	morphologyEx(blue, blue, MORPH_OPEN, element, Point(-1, -1), 1);
-	morphologyEx(blue, blue, MORPH_CLOSE, element, Point(-1, -1), 1);
+	morphologyEx(blue, blue, MORPH_CLOSE, element, Point(-1, -1), 2);
 	vector<Vec3f> circles;
 
-	HoughCircles(blue, circles, HOUGH_GRADIENT, 1, blue.rows/4, 70, 20, blue.rows/7.5, blue.rows/3);
+	HoughCircles(blue, circles, HOUGH_GRADIENT, 1, blue.rows/3, 100, 23, blue.rows/8, blue.rows/3);
+	cout << circles.size() << " found" << endl;
 
 #if DEBUG==1
 
 	namedWindow("origin", WINDOW_NORMAL);
 	namedWindow("blue", WINDOW_NORMAL);
 
-	cout << circles.size() << " found" << endl;
 	for(size_t i = 0; i < circles.size(); i++)
 	{
 		center.x = cvRound(circles[i][0]);
@@ -141,17 +142,29 @@ Point get_cup_center(Mat image)
 	}
 
 	imshow("origin", image);
-	if(circles.size() != 0)
-		imshow("blue", blue);
+	imshow("blue", blue);
 	waitKey(1);
 
 #endif
 
+	if(circles.size() != 0)
+	{
+		int sx = 0, sy = 0;
+		for(size_t i = 0; i < circles.size(); i++)
+		{
+			sx += cvRound(circles[i][0]);
+			sy += cvRound(circles[i][1]);
+		}
+
+		center.x = sx / circles.size();
+		center.y = sy / circles.size();
+	}
+/*
 	if(circles.size() == 1)
 	{
 		center.x = cvRound(circles[0][0]);
 		center.y = cvRound(circles[0][1]);
 	}
-
+*/
 	return center;
 }
