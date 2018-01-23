@@ -1,6 +1,5 @@
-## Drink-Servant
-
-# A final project in Robotics course
+# Drink-Servant
+A final project in Robotics course
 
 # Equipments:
 1. Six-wheel mobile robot
